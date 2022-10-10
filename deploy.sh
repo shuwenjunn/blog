@@ -7,7 +7,7 @@ set -e
 git add .
 git commit -m 'update'
 # 主分支为main
-git push origin main
+git push -f origin main
 # 生成静态文件
 npm run build
 # 进入生成的文件夹
