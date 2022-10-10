@@ -1,15 +1,13 @@
 module.exports = {
-  title: "VuePress Blog Example",
+  title: "Seven's Blog",
   description: "This is a blog example built by VuePress",
-  theme: "@vuepress/theme-blog", // OR shortcut: @vuepress/blog
-  plugins: ['demo-container'],
-  base:"/blog/",
+  theme: "@vuepress/theme-blog",
+  plugins: ["demo-container"],
+  base: "/blog/",
+  // 文档：https://vuepress-theme-blog.billyyyyy3320.com/
   themeConfig: {
-    /**
-     * Ref: https://vuepress-theme-blog.ulivz.com/#modifyblogpluginoptions
-     */
     modifyBlogPluginOptions(blogPluginOptions) {
-      return [...blogPluginOptions];
+      return blogPluginOptions;
     },
     directories: [
       {
@@ -18,17 +16,14 @@ module.exports = {
         path: "/",
       },
       {
-        id: "writing", // Unique id for current classifier
-        dirname: "_writings", // Matched directory name
-        path: "/writings/", // Entry page for current classifier
+        id: "writing",
+        dirname: "_writings",
+        path: "/writings/",
       },
     ],
-    /**
-     * Ref: https://vuepress-theme-blog.ulivz.com/#nav
-     */
     nav: [
       {
-        text: "Blog",
+        text: "首页",
         link: "/",
       },
       {
@@ -36,18 +31,11 @@ module.exports = {
         link: "/writings/",
       },
     ],
-    /**
-     * Ref: https://vuepress-theme-blog.ulivz.com/#footer
-     */
     footer: {
       contact: [
         {
           type: "github",
-          link: "https://github.com/ulivz",
-        },
-        {
-          type: "twitter",
-          link: "https://twitter.com/_ulivz",
+          link: "https://github.com/shuwenjunn",
         },
       ],
       copyright: [
@@ -56,7 +44,7 @@ module.exports = {
           link: "https://policies.google.com/privacy?hl=en-US",
         },
         {
-          text: "MIT Licensed | Copyright © 2018-present Vue.js",
+          text: "Copyright 2020. All Rights Reserved.",
           link: "",
         },
       ],
