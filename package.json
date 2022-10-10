@@ -9,9 +9,9 @@
   },
   "repository": "/blog",
   "scripts": {
+    "deploy": "sh deploy.sh",
     "dev": "vuepress dev blog",
-    "build": "vuepress build blog",
-    "deploy": "sh deploy.sh"
+    "build": "vuepress build blog"
   },
   "license": "MIT",
   "devDependencies": {
