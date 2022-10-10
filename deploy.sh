@@ -12,7 +12,7 @@ git push -f origin main
 npm run build
 
 # 进入生成的文件夹
-cd docs/.vuepress/dist
+cd blog/.vuepress/dist
 
 # gh-pages 分支提交
 git init
@@ -21,4 +21,4 @@ git commit -m 'deploy'
 git push -f git@github.com:shuwenjunn/blog.git main:gh-pages
 
 cd -
-rm -rf docs/.vuepress/dist
+rm -rf blog/.vuepress/dist
