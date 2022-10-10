@@ -10,10 +10,8 @@ git commit -m 'update'
 git push origin main
 # 生成静态文件
 npm run build
-
 # 进入生成的文件夹
 cd blog/.vuepress/dist
-
 # gh-pages 分支提交
 git init
 git add -A
