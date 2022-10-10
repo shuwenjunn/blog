@@ -3,6 +3,7 @@ module.exports = {
   description: "This is a blog example built by VuePress",
   theme: "@vuepress/theme-blog", // OR shortcut: @vuepress/blog
   plugins: ['demo-container'],
+  base:"/blog/",
   themeConfig: {
     /**
      * Ref: https://vuepress-theme-blog.ulivz.com/#modifyblogpluginoptions
