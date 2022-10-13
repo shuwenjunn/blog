@@ -11,7 +11,7 @@ module.exports = {
     directories: [
       {
         id: "home",
-        dirname: "src/home",
+        dirname: "note/home",
         path: "/",
       },
     ],
