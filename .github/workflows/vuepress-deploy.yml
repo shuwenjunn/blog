@@ -1,18 +1,17 @@
-name: Build and Deploy
+name: A TO A:GH_PAGES
 on: [push]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
+      - name: Checkout
+        uses: actions/checkout@main
 
-    - name: vuepress-deploy
-      uses: jenkey2011/vuepress-deploy@master
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        TARGET_REPO: username/repo
-        TARGET_BRANCH: master
-        BUILD_SCRIPT: yarn && yarn docs:build
-        BUILD_DIR: docs/.vuepress/dist
-        CNAME: https://www.xxx.com
+      - name: Build and Deploy
+        uses: shuwenjunn/blog@main
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TARGET_REPO: shuwenjunn/blog
+          TARGET_BRANCH: gh_pages
+          BUILD_SCRIPT: yarn && yarn build
+          BUILD_DIR: blog/.vuepress/dist/
