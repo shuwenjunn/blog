@@ -4,7 +4,6 @@ module.exports = {
   theme: "@vuepress/theme-blog",
   plugins: ["demo-container"],
   base: "/blog/",
-  // 文档：https://vuepress-theme-blog.billyyyyy3320.com/
   themeConfig: {
     modifyBlogPluginOptions(blogPluginOptions) {
       return blogPluginOptions;

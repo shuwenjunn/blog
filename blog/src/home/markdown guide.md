@@ -1,7 +1,6 @@
 ---
 tag:
   - markdown
-  - vuepress
 ---
 
 # Markdown Guide
