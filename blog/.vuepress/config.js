@@ -12,7 +12,7 @@ module.exports = {
     directories: [
       {
         id: "home",
-        dirname: "_home",
+        dirname: "src/home",
         path: "/",
       },
     ],
