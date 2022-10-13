@@ -11,24 +11,15 @@ module.exports = {
     },
     directories: [
       {
-        id: "post",
-        dirname: "_posts",
+        id: "home",
+        dirname: "_home",
         path: "/",
-      },
-      {
-        id: "writing",
-        dirname: "_writings",
-        path: "/writings/",
       },
     ],
     nav: [
       {
         text: "首页",
         link: "/",
-      },
-      {
-        text: "随笔",
-        link: "/writings/",
       },
     ],
     footer: {
