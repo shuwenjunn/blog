@@ -4,49 +4,39 @@
 
 ## 前置知识点 函数柯里化
 
-::: demo
+```js
+function compose(...fns) {
+  return fns.reduce(
+    (pre, cur) =>
+      (...args) =>
+        pre(cur(...args))
+  );
+}
+function a(params) {
+  return params + "a";
+}
 
-```vue
-<template>
-  <button @click="run1">clicke me(不使用compose)</button>
-  <button @click="run2">clicke me(compose 调用)</button>
-</template>
-<script>
-export default {
-  data() {
-    return {};
-  },
-  methods: {
-    a(param) {
-      return param + "a";
-    },
-    b(param) {
-      return param + "b";
-    },
-    c(param) {
-      return param + "c";
-    },
-    compose(...fns) {
-      return fns.reduce(
-        (pre, cur) =>
-          (...args) =>
-            pre(cur(...args))
-      );
-    },
-    run1() {
-      const res = this.c(this.b(this.a("执行")));
-      alert(res);
-    },
-    run2() {
-      const res = this.compose(this.c, this.b, this.a)("执行");
-      alert(res);
-    },
-  },
-};
-</script>
+function b(params) {
+  return params + "b";
+}
+
+function c(params) {
+  return params + "c";
+}
+
+function d(params) {
+  return params + "d";
+}
+
+compose(d, c, b, a)("run:"); ////>> run:abcd
+
+// compose 分解
+run1 = (...args) => d(c(...args));
+run2 = (...args) => run1(b(...args));
+run3 = (...args) => run2(a(...args));
+// 执行顺序
+run3("run:"); //>> run:abcd
 ```
-
-:::
 
 ## redux-thunk 支持 dispatch function
 
