@@ -7,17 +7,17 @@ set -e
 
 git add .
 git commit -a --allow-empty-message -m ''
-# # 主分支为main
-# git push origin main
-# # 生成静态文件
-# npm run build
-# # 进入生成的文件夹
-# cd blog/.vuepress/dist
-# # gh-pages 分支提交
-# git init
-# git add -A
-# git commit -m 'deploy'
-# git push -f git@github.com:shuwenjunn/blog.git main:gh-pages
+# 主分支为main
+git push origin main
+# 生成静态文件
+npm run build
+# 进入生成的文件夹
+cd blog/.vuepress/dist
+# gh-pages 分支提交
+git init
+git add -A
+git commit -m 'deploy'
+git push -f git@github.com:shuwenjunn/blog.git main:gh-pages
 
-# cd -
-# rm -rf blog/.vuepress/dist
+cd -
+rm -rf blog/.vuepress/dist
