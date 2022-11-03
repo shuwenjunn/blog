@@ -5,11 +5,8 @@ set -e
 
 # 主分支提交
 
-note=`git status`
-git status
-
 git add .
-git commit -am "$note"
+git commit -a --allow-empty-message -m ''
 # 主分支为main
 git push origin main
 # 生成静态文件
