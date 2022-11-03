@@ -27,13 +27,12 @@ export default {
       return param + "c";
     },
     compose(...fns) {
-      return fns.reduce((pre, cur) => {
-        return (...args) => {
-          return pre(cur(...args));
-        };
-      });
+      return fns.reduce(
+        (pre, cur) =>
+          (...args) =>
+            pre(cur(...args))
+      );
     },
-
     run1() {
       const res = this.c(this.b(this.a("执行")));
       alert(res);
