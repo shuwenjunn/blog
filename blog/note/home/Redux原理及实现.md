@@ -1,9 +1,52 @@
 # Redux 原理及实现
 
-> redux源码：https://github.com/reduxjs/redux/tree/55e77e88c98723f1883929458bb0144430108143/src
+> redux 源码：https://github.com/reduxjs/redux/tree/55e77e88c98723f1883929458bb0144430108143/src
 
 ## 前置知识点 函数柯里化
 
+::: demo
+
+```vue
+<template>
+  <button @click="run1">clicke me(不使用compose)</button>
+  <button @click="run2">clicke me(compose 调用)</button>
+</template>
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    a(param) {
+      return param + "a";
+    },
+    b(param) {
+      return param + "b";
+    },
+    c(param) {
+      return param + "c";
+    },
+    compose(...fns) {
+      return fns.reduce(
+        (pre, cur) =>
+          (...args) =>
+            a(b(...args))
+      );
+    },
+    run1() {
+      const res = this.c(this.b(this.a("执行")));
+      alert(res);
+    },
+    run2() {
+      const res = this.compose(this.c, this.b, this.a)("执行");
+      alert(res);
+    },
+  },
+};
+</script>
+```
+
+:::
 
 ## redux-thunk 支持 dispatch function
 
