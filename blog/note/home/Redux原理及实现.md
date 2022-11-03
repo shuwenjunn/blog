@@ -134,8 +134,9 @@ store.dispatch(fetchUsersAsync());
 ## applyMiddleware
 redux 实现
 
-<iframe id="iframe" height=350 width=80% frameborder=0 allowfullscreen="true" src="https://stackblitz.com/edit/react-ts-21tkhx?file=App.tsx">  
+<iframe height=400 width=100% frameborder=0 allowfullscreen="true" src="https://stackblitz.com/edit/react-ts-21tkhx?file=App.tsx">  
  </iframe>
+
 ## 洋葱模型
 
 ## 巧妙的设计
