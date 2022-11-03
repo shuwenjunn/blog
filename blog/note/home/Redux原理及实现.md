@@ -38,6 +38,8 @@ run3 = (...args) => run2(a(...args));
 run3("run:"); //>> run:abcd
 ```
 
+`compose(d, d, b,a) (...args) === d(c(b(a(...args))))`
+
 ## redux-thunk 支持 dispatch function
 
 先看一个使用案例以便理解
