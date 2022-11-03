@@ -1,5 +1,6 @@
 module.exports = {
-  title: "Seven's Blog",
+  // title: "Seven's Blog",
+  title: "",
   description: "This is a blog example built by VuePress",
   theme: "@vuepress/theme-blog",
   plugins: ["demo-container"],

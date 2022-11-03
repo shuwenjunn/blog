@@ -27,11 +27,9 @@ export default {
       return param + "c";
     },
     compose(...fns) {
-      return fns.reduce(
-        (pre, cur) =>
-          (...args) =>
-            a(b(...args))
-      );
+      return fns.reduce((pre, cur) => {
+        return (...args) => pre(cur(...args));
+      });
     },
     run1() {
       const res = this.c(this.b(this.a("执行")));
