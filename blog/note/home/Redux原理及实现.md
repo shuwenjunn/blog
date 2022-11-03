@@ -28,9 +28,12 @@ export default {
     },
     compose(...fns) {
       return fns.reduce((pre, cur) => {
-        return (...args) => pre(cur(...args));
+        return (...args) => {
+          return pre(cur(...args));
+        };
       });
     },
+
     run1() {
       const res = this.c(this.b(this.a("执行")));
       alert(res);
