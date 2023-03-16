@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Redux 原理及实现 | Seven&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="redux 源码：https://github.com/reduxjs/redux/tree/55e77e88c98723f1883929458bb0144430108143/src
+
+前置知识点 函数柯里化
+
+function compose(...fns) {
+  return fns.reduce(
+    (pre, cur) =&gt;
+      (...args) ...">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.9edd34f7.css" as="style"><link rel="preload" href="/blog/assets/js/app.a4c651a4.js" as="script"><link rel="preload" href="/blog/assets/js/6.47d1c63b.js" as="script"><link rel="preload" href="/blog/assets/js/3.0bdca723.js" as="script"><link rel="preload" href="/blog/assets/js/28.9b61e880.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.d2a0ecdc.js"><link rel="prefetch" href="/blog/assets/js/11.6b6aafb1.js"><link rel="prefetch" href="/blog/assets/js/12.418609a4.js"><link rel="prefetch" href="/blog/assets/js/13.4a9334e8.js"><link rel="prefetch" href="/blog/assets/js/14.c1bbd798.js"><link rel="prefetch" href="/blog/assets/js/15.144c7677.js"><link rel="prefetch" href="/blog/assets/js/16.a53f27d0.js"><link rel="prefetch" href="/blog/assets/js/17.51f4a77e.js"><link rel="prefetch" href="/blog/assets/js/18.f3211d9b.js"><link rel="prefetch" href="/blog/assets/js/19.93de877c.js"><link rel="prefetch" href="/blog/assets/js/20.bf31d25c.js"><link rel="prefetch" href="/blog/assets/js/21.6e9681d4.js"><link rel="prefetch" href="/blog/assets/js/22.b02daa3a.js"><link rel="prefetch" href="/blog/assets/js/23.cbc1a0da.js"><link rel="prefetch" href="/blog/assets/js/24.89342017.js"><link rel="prefetch" href="/blog/assets/js/25.5ed2030b.js"><link rel="prefetch" href="/blog/assets/js/26.665e36a7.js"><link rel="prefetch" href="/blog/assets/js/27.2af9c17b.js"><link rel="prefetch" href="/blog/assets/js/29.b0b5c899.js"><link rel="prefetch" href="/blog/assets/js/30.e6ffb329.js"><link rel="prefetch" href="/blog/assets/js/31.7a7bc948.js"><link rel="prefetch" href="/blog/assets/js/32.2936c370.js"><link rel="prefetch" href="/blog/assets/js/33.bb82dd24.js"><link rel="prefetch" href="/blog/assets/js/34.98f1f70f.js"><link rel="prefetch" href="/blog/assets/js/35.44a42ebc.js"><link rel="prefetch" href="/blog/assets/js/36.096c7d49.js"><link rel="prefetch" href="/blog/assets/js/37.0aab41bc.js"><link rel="prefetch" href="/blog/assets/js/38.28e206aa.js"><link rel="prefetch" href="/blog/assets/js/4.478f45df.js"><link rel="prefetch" href="/blog/assets/js/5.8892bda9.js"><link rel="prefetch" href="/blog/assets/js/7.3192e6fc.js"><link rel="prefetch" href="/blog/assets/js/8.987f913d.js"><link rel="prefetch" href="/blog/assets/js/9.df87cfe0.js"><link rel="prefetch" href="/blog/assets/js/vuejs-paginate.60e8040c.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.9edd34f7.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/blog/" class="nav-link home-link">Seven's Blog </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/blog/" class="nav-link">首页</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/blog/" class="nav-link mobile-home-link">Seven's Blog </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/blog/" class="nav-link">首页</a></li> <li class="mobile-nav-item"><!----></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        
+      </h1> <div class="post-meta"><!----> <!----> <!----></div></header> <div itemprop="articleBody" class="content__default"><h1 id="redux-原理及实现"><a href="#redux-原理及实现" class="header-anchor">#</a> Redux 原理及实现</h1> <blockquote><p>redux 源码：https://github.com/reduxjs/redux/tree/55e77e88c98723f1883929458bb0144430108143/src</p></blockquote> <h2 id="前置知识点-函数柯里化"><a href="#前置知识点-函数柯里化" class="header-anchor">#</a> 前置知识点 函数柯里化</h2> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">compose</span><span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>fns</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> fns<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span>
+    <span class="token punctuation">(</span><span class="token parameter">pre<span class="token punctuation">,</span> cur</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span>
+      <span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>args</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span>
+        <span class="token function">pre</span><span class="token punctuation">(</span><span class="token function">cur</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token parameter">params</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> params <span class="token operator">+</span> <span class="token string">&quot;a&quot;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token parameter">params</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> params <span class="token operator">+</span> <span class="token string">&quot;b&quot;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">c</span><span class="token punctuation">(</span><span class="token parameter">params</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> params <span class="token operator">+</span> <span class="token string">&quot;c&quot;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">d</span><span class="token punctuation">(</span><span class="token parameter">params</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> params <span class="token operator">+</span> <span class="token string">&quot;d&quot;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">compose</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> c<span class="token punctuation">,</span> b<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">&quot;run:&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">////&gt;&gt; run:abcd</span>
+
+<span class="token comment">// compose 分解</span>
+<span class="token function-variable function">run1</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>args</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">d</span><span class="token punctuation">(</span><span class="token function">c</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function-variable function">run2</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>args</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">run1</span><span class="token punctuation">(</span><span class="token function">b</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function-variable function">run3</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>args</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">run2</span><span class="token punctuation">(</span><span class="token function">a</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 执行顺序</span>
+<span class="token function">run3</span><span class="token punctuation">(</span><span class="token string">&quot;run:&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&gt;&gt; run:abcd</span>
+</code></pre></div><p><code>compose(d, c, b, a)(...args) === d(c(b(a(...args))));</code></p> <h2 id="redux-thunk-支持-dispatch-function"><a href="#redux-thunk-支持-dispatch-function" class="header-anchor">#</a> redux-thunk 支持 dispatch function</h2> <p>先看一个使用案例以便理解</p> <div class="language-js extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br></div><pre class="language-js"><code><span class="token keyword">const</span> redux <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;redux&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> createStore <span class="token operator">=</span> redux<span class="token punctuation">.</span>createStore<span class="token punctuation">;</span>
+<span class="token keyword">const</span> applyMiddleware <span class="token operator">=</span> redux<span class="token punctuation">.</span>applyMiddleware<span class="token punctuation">;</span>
+<span class="token keyword">const</span> thunkMiddleware <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;redux-thunk&quot;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>default<span class="token punctuation">;</span>
+<span class="token keyword">const</span> axios <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&quot;axios&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// state</span>
+<span class="token keyword">const</span> initialState <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">loading</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">users</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">error</span><span class="token operator">:</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment">// action</span>
+<span class="token keyword">const</span> <span class="token constant">FETCH_USERS_REQUEST</span> <span class="token operator">=</span> <span class="token string">&quot;FETCH_USERS_REQUEST&quot;</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">FETCH_USERS_SUCCESS</span> <span class="token operator">=</span> <span class="token string">&quot;FETCH_USERS_SUCCESS&quot;</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">FETCH_USERS_FAILURE</span> <span class="token operator">=</span> <span class="token string">&quot;FETCH_USERS_FAILURE&quot;</span><span class="token punctuation">;</span>
+
+<span class="token comment">// action creator</span>
+<span class="token keyword">const</span> <span class="token function-variable function">fetchUsersRequest</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token constant">FETCH_USERS_REQUEST</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">fetchUsersSuccess</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">users</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token constant">FETCH_USERS_SUCCESS</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">payload</span><span class="token operator">:</span> users<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token function-variable function">fetchUsersFailure</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">error</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token constant">FETCH_USERS_FAILURE</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">payload</span><span class="token operator">:</span> error<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// reducers</span>
+<span class="token keyword">const</span> <span class="token function-variable function">reducer</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">state <span class="token operator">=</span> initialState<span class="token punctuation">,</span> action</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token constant">FETCH_USERS_REQUEST</span><span class="token operator">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token operator">...</span>state<span class="token punctuation">,</span>
+        <span class="token literal-property property">loading</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">FETCH_USERS_SUCCESS</span><span class="token operator">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token operator">...</span>state<span class="token punctuation">,</span>
+        <span class="token literal-property property">loading</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">users</span><span class="token operator">:</span> action<span class="token punctuation">.</span>payload<span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">FETCH_USERS_FAILURE</span><span class="token operator">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token operator">...</span>state<span class="token punctuation">,</span>
+        <span class="token literal-property property">loading</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">error</span><span class="token operator">:</span> action<span class="token punctuation">.</span>payload<span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">default</span><span class="token operator">:</span>
+      <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">fetchUsersAsync</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">dispatch</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">fetchUsersRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    axios
+      <span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">&quot;https://jsonplaceholder.typicode.com/users&quot;</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token comment">// response.data is the list of users</span>
+        <span class="token keyword">const</span> users <span class="token operator">=</span> response<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">user</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> user<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">fetchUsersSuccess</span><span class="token punctuation">(</span>users<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">error</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> message <span class="token operator">=</span> error<span class="token punctuation">.</span>message<span class="token punctuation">;</span>
+        <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">fetchUsersFailure</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span>reducer<span class="token punctuation">,</span> <span class="token function">applyMiddleware</span><span class="token punctuation">(</span>thunkMiddleware<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+store<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>store<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// dispatch 了异步action</span>
+store<span class="token punctuation">.</span><span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">fetchUsersAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="applymiddleware"><a href="#applymiddleware" class="header-anchor">#</a> applyMiddleware</h2> <p>redux 实现</p> <iframe height="400" width="100%" frameborder="0" allowfullscreen="allowfullscreen" src="https://stackblitz.com/edit/react-ts-21tkhx?file=App.tsx"></iframe> <h2 id="洋葱模型"><a href="#洋葱模型" class="header-anchor">#</a> 洋葱模型</h2> <h2 id="巧妙的设计"><a href="#巧妙的设计" class="header-anchor">#</a> 巧妙的设计</h2></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#前置知识点-函数柯里化" title="前置知识点 函数柯里化">前置知识点 函数柯里化</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#redux-thunk-支持-dispatch-function" title="redux-thunk 支持 dispatch function">redux-thunk 支持 dispatch function</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#applymiddleware" title="applyMiddleware">applyMiddleware</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#洋葱模型" title="洋葱模型">洋葱模型</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#巧妙的设计" title="巧妙的设计">巧妙的设计</a></div></div></div></div> <footer class="footer" data-v-3d9deeb8><div class="footer-left-wrap" data-v-3d9deeb8><ul class="contact" data-v-3d9deeb8><li class="contact-item" data-v-3d9deeb8><a href="https://github.com/shuwenjunn" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-3d9deeb8><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-3d9deeb8></path></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-3d9deeb8><ul class="copyright" data-v-3d9deeb8><li class="copyright-item" data-v-3d9deeb8><a href="https://policies.google.com/privacy?hl=en-US" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-3d9deeb8>Privacy Policy</a></li><li class="copyright-item" data-v-3d9deeb8>Copyright 2020. All Rights Reserved.</li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/blog/assets/js/app.a4c651a4.js" defer></script><script src="/blog/assets/js/6.47d1c63b.js" defer></script><script src="/blog/assets/js/3.0bdca723.js" defer></script><script src="/blog/assets/js/28.9b61e880.js" defer></script>
+  </body>
+</html>
